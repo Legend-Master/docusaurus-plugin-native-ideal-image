@@ -14,21 +14,19 @@ export type Preset = {
 
 export type LoaderOptions = {
 	/**
-	 * Filename template for output files.
+	 * File name template for output files
 	 */
 	fileNameTemplate: string
+	/**
+	 * Image loader presets
+	 */
 	presets: Record<string, Preset>
 	/**
-	 * JPEG compression quality
-	 */
-	quality: number
-	/**
-	 * JPEG compression quality
+	 * Low quality image placeholder format
 	 */
 	lqipFormat: SupportedOutputTypes
 	/**
-	 * You can test ideal image behavior in dev mode by setting this to `false`.
-	 * Tip: use network throttling in your browser to simulate slow networks.
+	 * Disable in dev mode for faster compile time
 	 */
 	disableInDev: boolean
 }
@@ -56,7 +54,6 @@ const DEFAULT_OPTIONS = {
 			formats: ['webp', 'jpeg'],
 		},
 	},
-	quality: 80,
 	disableInDev: false,
 } satisfies LoaderOptions
 

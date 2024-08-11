@@ -1,12 +1,13 @@
 {
 	"name": "docusaurus-plugin-native-ideal-image",
 	"version": "0.0.0",
-	"description": "",
-	"keywords": [],
+	"description": "Pre-process images to multiple formats and low quality image placeholders",
+	"keywords": ["docusaurus"],
 	"author": "Tony",
 	"license": "MIT",
 	"main": "./lib/index.js",
 	"scripts": {
+		"build": "tsc & npm run copy-css",
 		"watch": "tsc --watch",
 		"copy-css": "node scripts/copy-css.js"
 	},
