@@ -1,0 +1,22 @@
+.picture {
+	position: relative;
+    overflow: hidden;
+}
+
+.picture > img {
+    display: block;
+	width: 100%;
+	height: auto;
+}
+
+.picture::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: var(--lqip);
+	background-repeat: no-repeat;
+	background-size: cover;
+    filter: blur(10px);
+	transform: scale(1.1);
+    z-index: -1;
+}
