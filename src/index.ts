@@ -7,11 +7,17 @@ import type {
 	SupportedOutputTypes,
 } from './loader.js'
 
+export type Preset = {
+	sizes?: number[]
+	formats?: SupportedOutputTypes[]
+}
+
 export type LoaderOptions = {
 	/**
 	 * Filename template for output files.
 	 */
 	fileNameTemplate: string
+	presets: Record<string, Preset>
 	/**
 	 * JPEG compression quality
 	 */
@@ -45,6 +51,11 @@ export type NativeIdealImageProps = ComponentProps<'img'> & {
 const DEFAULT_OPTIONS = {
 	fileNameTemplate: 'assets/native-ideal-image/[name]-[hash:hex:5]-[width].[format]',
 	lqipFormat: 'webp',
+	presets: {
+		default: {
+			formats: ['webp', 'jpeg'],
+		},
+	},
 	quality: 80,
 	disableInDev: false,
 } satisfies LoaderOptions
@@ -65,7 +76,7 @@ export default function pluginNativeIdealImage(
 		},
 
 		configureWebpack(_config, isServer) {
-			const { disableInDev, ...loaderOptions } = {
+			const { disableInDev, presets, ...loaderOptions } = {
 				...DEFAULT_OPTIONS,
 				...options,
 			}
@@ -85,7 +96,10 @@ export default function pluginNativeIdealImage(
 							use: [
 								{
 									loader: path.resolve(__dirname, './loader.js'),
-									options: loaderOptions,
+									options: {
+										...loaderOptions,
+										presets: { ...DEFAULT_OPTIONS.presets, ...presets },
+									},
 								},
 							],
 						},

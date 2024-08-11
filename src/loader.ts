@@ -38,14 +38,18 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 		throw `Can't get the width of this image (${this.resourcePath})`
 	}
 
-	const sizes: number[] = []
+	const preset = options.presets[queryOptions.get('preset') || 'default']
+
+	const sizes: number[] = [...(preset?.sizes || [])]
 	const w = queryOptions.get('w')
 	if (w) {
 		sizes.push(...new Set(w.split(',').map((size) => Math.min(Number(size), orginalWidth))))
-	} else {
+	}
+	if (sizes.length === 0) {
 		sizes.push(orginalWidth)
 	}
-	const formats: SupportedOutputTypes[] = []
+
+	const formats: SupportedOutputTypes[] = [...(preset?.formats || [])]
 	const formatQuery = queryOptions.get('format')
 	if (formatQuery) {
 		for (const format of formatQuery.split(',')) {
