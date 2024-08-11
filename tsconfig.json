@@ -8,16 +8,17 @@
         "moduleDetection": "force",
         "isolatedModules": true,
         "verbatimModuleSyntax": true,
+
         "strict": true,
         "noUncheckedIndexedAccess": true,
         "noImplicitOverride": true,
+
         "module": "NodeNext",
         "outDir": "lib",
         "sourceMap": true,
         "declaration": true,
-        "jsx": "react-native",
+
+        "jsx": "react-native"
     },
-    "include": [
-        "src"
-    ],
+    "include": ["src"],
 }
