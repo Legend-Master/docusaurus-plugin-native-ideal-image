@@ -1,13 +1,13 @@
 {
 	"name": "docusaurus-plugin-native-ideal-image",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Pre-process images to multiple formats and low quality image placeholders",
 	"keywords": ["docusaurus"],
 	"author": "Tony",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Legend-Master/docusaurus-plugin-native-ideal-image.git"
+		"url": "git+https://github.com/Legend-Master/docusaurus-plugin-native-ideal-image.git"
 	},
 	"homepage": "https://github.com/Legend-Master/docusaurus-plugin-native-ideal-image",
 	"main": "./lib/index.js",
@@ -18,7 +18,9 @@
 	"scripts": {
 		"build": "tsc -p ./src && npm run copy-css",
 		"watch": "tsc -p ./src --watch",
-		"copy-css": "node scripts/copy-css.js"
+		"copy-css": "node scripts/copy-css.js",
+		"clean-lib-folder": "node scripts/clean-lib-folder.js",
+		"publish": "npm run clean-lib-folder && npm run build && npm publish"
 	},
 	"devDependencies": {
 		"@types/loader-utils": "^2.0.6",
