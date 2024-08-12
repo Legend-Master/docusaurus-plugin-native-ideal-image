@@ -1,6 +1,6 @@
 {
 	"name": "docusaurus-plugin-native-ideal-image",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Pre-process images to multiple formats and low quality image placeholders",
 	"keywords": ["docusaurus"],
 	"author": "Tony",
@@ -20,7 +20,7 @@
 		"watch": "tsc -p ./src --watch",
 		"copy-css": "node scripts/copy-css.js",
 		"clean-lib-folder": "node scripts/clean-lib-folder.js",
-		"publish": "npm run clean-lib-folder && npm run build && npm publish"
+		"prepublishOnly": "npm run clean-lib-folder && npm run build"
 	},
 	"devDependencies": {
 		"@types/loader-utils": "^2.0.6",
