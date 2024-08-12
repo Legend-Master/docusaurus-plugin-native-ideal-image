@@ -12,8 +12,8 @@ npm install docusaurus-plugin-native-ideal-image
 
 And add the configuration to `docusaurus.config.js`/`docusaurus.config.ts`
 
-```ts
-const config: Config = {
+```js
+const config = {
     ...
     plugins: ['native-ideal-image'],
 }
@@ -21,7 +21,7 @@ const config: Config = {
 
 Then you can use it in your project like this
 
-```ts
+```tsx
 import image from '../images/some-image.jpeg'
 
 export default function App() {
