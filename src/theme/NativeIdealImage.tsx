@@ -3,11 +3,13 @@ import type { NativeIdealImageProps } from '../index.js'
 
 import styles from './NativeIdealImage.module.css'
 
-export default function IdealImage(props: NativeIdealImageProps): JSX.Element {
-	const { img, sizes, loading, ...propsRest } = props
+export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Element {
+	const { img, width, height, sizes, loading, ...propsRest } = props
 
 	const formats = typeof img === 'object' && 'formats' in img ? img.formats : []
 	const lqip = typeof img === 'object' && 'lqip' in img ? img.lqip : ''
+
+	const singleImage = formats[0]?.srcSet.length === 1 ? formats[0] : undefined
 
 	return (
 		<picture
@@ -30,6 +32,8 @@ export default function IdealImage(props: NativeIdealImageProps): JSX.Element {
 				src={typeof img === 'string' ? img : 'default' in img ? img.default : undefined}
 				loading={loading ?? 'lazy'}
 				sizes={sizes ?? 'auto'}
+				width={width || singleImage?.srcSet[0]?.width}
+				height={height || singleImage?.srcSet[0]?.height}
 				{...propsRest}
 			/>
 		</picture>

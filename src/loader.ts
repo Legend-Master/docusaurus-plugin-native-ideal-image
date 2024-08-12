@@ -30,6 +30,7 @@ export const DEFAULT_LOADER_OPTIONS = {
 	presets: {
 		default: {
 			formats: ['webp', 'jpeg'],
+			sizes: [2160],
 		},
 	},
 	disableInDev: false,

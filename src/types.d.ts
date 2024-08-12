@@ -4,5 +4,7 @@ declare module 'ideal-img!*' {
 }
 
 declare module '@theme/NativeIdealImage' {
-	export default function IdealImage(props: import('./index.ts').NativeIdealImageProps): JSX.Element
+	export default function NativeIdealImage(
+		props: import('./index.ts').NativeIdealImageProps
+	): JSX.Element
 }
