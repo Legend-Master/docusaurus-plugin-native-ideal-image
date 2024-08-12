@@ -2,6 +2,8 @@
 
 A docuaurus plugin for pre-processing images to multiple formats, sizes and low quality image placeholders
 
+> Note: this is still working in progress
+
 ## Usage
 
 First install

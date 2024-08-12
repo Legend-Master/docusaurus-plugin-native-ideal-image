@@ -16,6 +16,7 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 	const [placeHolderOnTop, setPlaceHolderOnTop] = useState(false)
 	const [loaded, setLoaded] = useState(false)
 
+	// Prevent fade in if we have the image cache available (likely being a back/forward navigation)
 	useEffect(() => {
 		if (!loaded) {
 			const id = setTimeout(() => setPlaceHolderOnTop(true), 50)
