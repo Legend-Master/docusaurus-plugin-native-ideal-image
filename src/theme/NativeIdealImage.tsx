@@ -5,10 +5,11 @@ import type { NativeIdealImageProps } from '../index.js'
 import './NativeIdealImage.css'
 
 export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Element {
-	const { img, width, height, sizes, loading, swapOnLoad, ...propsRest } = props
+	const { img, swapOnLoad, src, width, height, sizes, loading, ...propsRest } = props
 
-	const formats = typeof img === 'object' && 'formats' in img ? img.formats : []
-	const lqip = typeof img === 'object' && 'lqip' in img ? img.lqip : ''
+	const enabled = typeof img === 'object' && 'formats' in img
+	const formats = enabled ? img.formats : []
+	const lqip = enabled ? img.lqip : undefined
 
 	const singleImage = formats[0]?.srcSet.length === 1 ? formats[0] : undefined
 
@@ -40,11 +41,11 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 			))}
 			<img
 				// For disableInDev
-				src={typeof img === 'string' ? img : 'default' in img ? img.default : undefined}
+				src={src ?? enabled ? undefined : typeof img === 'string' ? img : img.default}
 				loading={loading ?? 'lazy'}
 				sizes={sizes ?? 'auto'}
-				width={width || singleImage?.srcSet[0]?.width}
-				height={height || singleImage?.srcSet[0]?.height}
+				width={width ?? singleImage?.srcSet[0]?.width}
+				height={height ?? singleImage?.srcSet[0]?.height}
 				{...propsRest}
 			/>
 		</picture>
