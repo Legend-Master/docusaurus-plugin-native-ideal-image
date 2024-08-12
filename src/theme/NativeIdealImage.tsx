@@ -1,26 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import clsx from 'clsx'
 import type { NativeIdealImageProps } from '../index.js'
 
-import styles from './NativeIdealImage.module.css'
+import './NativeIdealImage.css'
 
 export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Element {
-	const { img, width, height, sizes, loading, ...propsRest } = props
+	const { img, width, height, sizes, loading, swapOnLoad, ...propsRest } = props
 
 	const formats = typeof img === 'object' && 'formats' in img ? img.formats : []
 	const lqip = typeof img === 'object' && 'lqip' in img ? img.lqip : ''
 
 	const singleImage = formats[0]?.srcSet.length === 1 ? formats[0] : undefined
 
+	const [placeHolderOnTop, setPlaceHolderOnTop] = useState(false)
+	const [loaded, setLoaded] = useState(false)
+
+	useEffect(() => {
+		if (!loaded) {
+			const id = setTimeout(() => setPlaceHolderOnTop(true), 50)
+			return () => clearTimeout(id)
+		}
+	}, [loaded])
+
 	return (
 		<picture
-			className={styles.picture}
-			style={
-				lqip
-					? ({
-							'--lqip': `url(${lqip})`,
-					  } as React.CSSProperties)
-					: undefined
-			}
+			className={clsx('native-ideal-img', {
+				'swap-on-load': placeHolderOnTop && swapOnLoad,
+				loaded,
+			})}
+			style={lqip ? ({ '--lqip': `url(${lqip})` } as React.CSSProperties) : undefined}
+			onLoad={() => setLoaded(true)}
 		>
 			{formats.map((format) => (
 				<source

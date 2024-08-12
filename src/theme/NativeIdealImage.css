@@ -1,0 +1,33 @@
+.native-ideal-img {
+	display: block;
+	position: relative;
+	overflow: hidden;
+}
+
+.native-ideal-img > img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.native-ideal-img::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: var(--lqip);
+	background-repeat: no-repeat;
+	background-size: cover;
+	filter: blur(10px);
+	transform: scale(1.1);
+	z-index: -1;
+	transition: opacity 300ms, transform 300ms;
+}
+
+.native-ideal-img.swap-on-load::after {
+	z-index: 1;
+}
+
+.native-ideal-img.swap-on-load.loaded::after {
+	opacity: 0;
+	transform: scale(1);
+}

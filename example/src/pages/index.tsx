@@ -44,19 +44,19 @@ export default function Home(): JSX.Element {
 			<main>
 				<div className={styles.bigMargin}></div>
 				<div className={styles.cardsContainer}>
-					<Card name={'something 1'} image={stoneRoadImage} />
-					<Card name={'something 2'} image={stoneRoadImage} />
-					<Card name={'something 3'} image={stoneRoadImage} />
-					<Card name={'something 4'} image={stoneRoadImage} />
-					<Card name={'something 5'} image={stoneRoadImage} />
-					<Card name={'something 6'} image={stoneRoadImage} />
+					<Card name="normal 1" image={stoneRoadImage} />
+					<Card name="normal 2" image={stoneRoadImage} />
+					<Card name="normal 3" image={stoneRoadImage} />
+					<Card name="swap on load 4" image={stoneRoadImage} swapOnLoad />
+					<Card name="swap on load 5" image={stoneRoadImage} swapOnLoad />
+					<Card name="swap on load 6" image={stoneRoadImage} swapOnLoad />
 				</div>
 			</main>
 		</Layout>
 	)
 }
 
-function Card(props: { name: string; image: LoaderOutput }) {
+function Card(props: { name: string; image: LoaderOutput; swapOnLoad?: boolean }) {
 	return (
 		<div className={clsx(styles.card, 'pagination-nav__link')}>
 			<NativeIdealImage img={props.image} className={styles.cardImage} />

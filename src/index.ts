@@ -48,6 +48,11 @@ export type LoaderOutput = {
 
 export type NativeIdealImageProps = ComponentProps<'img'> & {
 	readonly img: { default: string } | string | LoaderOutput
+	/**
+	 * Swap (fade in) the actual image after it's fully loaded,
+	 * requires JavaScript to work, so this might cause the image to load a bit slower
+	 * */
+	swapOnLoad?: boolean
 }
 
 export default function pluginNativeIdealImage(
