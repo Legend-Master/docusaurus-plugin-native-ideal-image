@@ -5,6 +5,11 @@
 	"keywords": ["docusaurus"],
 	"author": "Tony",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Legend-Master/docusaurus-plugin-native-ideal-image.git"
+	},
+	"homepage": "https://github.com/Legend-Master/docusaurus-plugin-native-ideal-image",
 	"main": "./lib/index.js",
 	"exports": {
 		".": "./lib/index.js",
