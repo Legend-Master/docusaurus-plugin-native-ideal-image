@@ -1,0 +1,21 @@
+{
+	"extends": "../tsconfig.base.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"noEmit": true,
+		"types": [
+			"node",
+			"@docusaurus/module-type-aliases",
+			"@docusaurus/theme-classic",
+			"docusaurus-plugin-native-ideal-image/types",
+		],
+		"paths": {
+			"@site/*": [
+				"./*"
+			]
+		},
+
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+	}
+}

@@ -11,8 +11,8 @@
 		"./types": "./src/types.d.ts"
 	},
 	"scripts": {
-		"build": "tsc && npm run copy-css && npm run add-theme-types",
-		"watch": "tsc --watch",
+		"build": "tsc -p ./src && npm run copy-css",
+		"watch": "tsc -p ./src --watch",
 		"copy-css": "node scripts/copy-css.js",
 		"add-theme-types": "node scripts/add-theme-types.js"
 	},
@@ -30,5 +30,6 @@
 		"sharp": "^0.33.4",
 		"webpack": "^5.93.0"
 	},
+	"workspaces": ["example"],
 	"type": "module"
 }

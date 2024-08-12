@@ -1,0 +1,82 @@
+.heroBanner {
+	padding: 4rem 0;
+	text-align: center;
+	position: relative;
+	overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+	.heroBanner {
+		padding: 2rem;
+	}
+}
+
+.buttons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 1em 2em;
+}
+
+.bigMargin {
+	display: grid;
+	place-items: center;
+
+	height: 200vh;
+	margin: 2em;
+
+	background: linear-gradient(
+		hsla(141, 54%, 86%) 0%,
+		hsla(333, 73%, 85%) 50%,
+		hsla(211, 58%, 79%) 100%
+	);
+}
+
+html[data-theme='dark'] .bigMargin {
+	background: linear-gradient(
+		rgb(50, 210, 183) 0%,
+		rgb(93, 16, 106) 50%,
+		rgb(21, 90, 137) 100%
+	);
+}
+
+.cardsContainer {
+	display: grid;
+	margin: 3em;
+	grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+	grid-auto-rows: max-content;
+	gap: 2em;
+}
+
+@media (width < 500px) {
+	.cardsContainer {
+		margin: 2em;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 1em;
+	}
+}
+
+.card {
+	display: grid;
+	/* gap: 1em; */
+
+	border-color: var(--ifm-color-primary);
+
+	padding: 0;
+	overflow: hidden;
+}
+
+.cardImage {
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	/* border-radius: 0.5em; */
+	/* border-radius: var(--ifm-pagination-nav-border-radius) var(--ifm-pagination-nav-border-radius) 0 0; */
+}
+
+.card > div {
+	text-align: center;
+	margin: 1em;
+
+	color: var(--ifm-color-primary);
+}

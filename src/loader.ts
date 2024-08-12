@@ -38,7 +38,6 @@ export const DEFAULT_LOADER_OPTIONS = {
 } as const satisfies LoaderOptions
 
 export default async function loader(this: LoaderContext<LoaderOptions>, contentBuffer: Buffer) {
-	this.cacheable()
 	const callback = this.async()
 
 	const options = this.getOptions()
