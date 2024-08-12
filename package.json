@@ -6,6 +6,10 @@
 	"author": "Tony",
 	"license": "MIT",
 	"main": "./lib/index.js",
+	"exports": {
+		".": "./lib/index.js",
+		"./types": "./src/types.d.ts"
+	},
 	"scripts": {
 		"build": "tsc && npm run copy-css && npm run add-theme-types",
 		"watch": "tsc --watch",

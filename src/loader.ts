@@ -2,7 +2,7 @@ import type { LoaderContext } from 'webpack'
 import { readFile } from 'node:fs/promises'
 import sharp from 'sharp'
 import loaderUtils from 'loader-utils'
-import type { LoaderOutput, LoaderOptions } from './index.js'
+import { type LoaderOutput, type LoaderOptions } from './index.js'
 
 const MIMES = {
 	jpeg: 'image/jpeg',
@@ -24,10 +24,27 @@ export type OutputDataForFormat = {
 	srcSet: SrcSetData[]
 }
 
+export const DEFAULT_LOADER_OPTIONS = {
+	fileNameTemplate: 'assets/native-ideal-image/[name]-[hash:hex:5]-[width].[format]',
+	lqipFormat: 'webp',
+	presets: {
+		default: {
+			formats: ['webp', 'jpeg'],
+		},
+	},
+	disableInDev: false,
+} as const satisfies LoaderOptions
+
 export default async function loader(this: LoaderContext<LoaderOptions>, contentBuffer: Buffer) {
 	this.cacheable()
 	const callback = this.async()
+
 	const options = this.getOptions()
+	if (options.disableInDev && process.env.NODE_ENV !== 'production') {
+		callback(null, `module.exports = ${this.resourceQuery};`)
+		return
+	}
+
 	const queryOptions = new URLSearchParams(this.resourceQuery)
 
 	const buffer = await readFile(this.resourcePath)
