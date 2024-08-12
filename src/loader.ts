@@ -90,7 +90,7 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 		// src: files[0]![files.length - 1]!,
 		lqip,
 	} satisfies LoaderOutput
-	callback(null, `module.exports = ${JSON.stringify(output)};`)
+	callback(null, `export default ${JSON.stringify(output)}`)
 }
 
 async function createFiles(
