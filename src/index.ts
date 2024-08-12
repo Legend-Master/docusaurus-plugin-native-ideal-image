@@ -13,6 +13,7 @@ import {
 export type Preset = {
 	sizes?: number[]
 	formats?: SupportedOutputTypes[]
+	lqip?: boolean
 }
 
 export type LoaderOptions = {
@@ -42,7 +43,7 @@ export type LoaderOutput = {
 	// 	width: number
 	// 	height: number
 	// }
-	lqip: string
+	lqip?: string
 }
 
 export type NativeIdealImageProps = ComponentProps<'img'> & {

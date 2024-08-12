@@ -31,6 +31,7 @@ export const DEFAULT_LOADER_OPTIONS = {
 		default: {
 			formats: ['webp', 'jpeg'],
 			sizes: [2160],
+			lqip: true,
 		},
 	},
 	disableInDev: false,
@@ -82,9 +83,12 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 		formats.push('webp')
 	}
 
+	const lqipOverride = queryOptions.get('lqip')
+	const shouldGenerateLqip = lqipOverride ? lqipOverride !== 'false' : preset?.lqip !== false
+
 	const [files, lqip] = await Promise.all([
 		createFiles(this, image.clone(), { formats, sizes }),
-		toBase64Lqip(image.clone(), options.lqipFormat),
+		shouldGenerateLqip ? toBase64Lqip(image.clone(), options.lqipFormat) : undefined,
 	])
 	const output = {
 		formats: files,

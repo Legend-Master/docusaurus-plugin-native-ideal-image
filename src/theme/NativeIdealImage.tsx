@@ -15,9 +15,11 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 		<picture
 			className={styles.picture}
 			style={
-				{
-					'--lqip': `url(${lqip})`,
-				} as React.CSSProperties
+				lqip
+					? ({
+							'--lqip': `url(${lqip})`,
+					  } as React.CSSProperties)
+					: undefined
 			}
 		>
 			{formats.map((format) => (
