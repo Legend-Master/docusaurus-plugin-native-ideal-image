@@ -22,9 +22,9 @@ const config: Config = {
 Then you can use it in your project like this
 
 ```ts
-;`import image from '../images/some-image.jpeg'`
+import image from '../images/some-image.jpeg'
 
-export default function SomeComponent() {
+export default function App() {
 	return (
 		<main>
 			<NativeIdealImage img={image} />
