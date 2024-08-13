@@ -59,11 +59,13 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 
 	const preset = options.presets[queryOptions.get('preset') || 'default']
 
-	const presetSizes = typeof preset?.sizes === 'number' ? [preset.sizes] : preset?.sizes
-	const sizes: number[] = [...(presetSizes || [])]
+	const sizes: number[] = []
 	const w = queryOptions.get('w')
 	if (w) {
 		sizes.push(...new Set(w.split(',').map((size) => Math.min(Number(size), orginalWidth))))
+	} else {
+		const presetSizes = typeof preset?.sizes === 'number' ? [preset.sizes] : preset?.sizes
+		sizes.push(...(presetSizes || []))
 	}
 	if (sizes.length === 0) {
 		sizes.push(orginalWidth)
@@ -71,8 +73,7 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 	// https://stackoverflow.com/questions/1063007/how-to-sort-an-array-of-integers
 	sizes.sort((a, b) => a - b)
 
-	const presetFormats = typeof preset?.formats === 'string' ? [preset.formats] : preset?.formats
-	const formats: SupportedOutputTypes[] = [...(presetFormats || [])]
+	const formats: SupportedOutputTypes[] = []
 	const formatQuery = queryOptions.get('format')
 	if (formatQuery) {
 		for (const format of formatQuery.split(',')) {
@@ -82,6 +83,9 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 				console.warn(`Unknown format ${format} for ideal image`)
 			}
 		}
+	} else {
+		const presetFormats = typeof preset?.formats === 'string' ? [preset.formats] : preset?.formats
+		formats.push(...(presetFormats || []))
 	}
 	if (formats.length === 0) {
 		formats.push('webp')
