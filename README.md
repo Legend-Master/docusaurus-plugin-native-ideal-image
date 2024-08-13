@@ -26,20 +26,17 @@ Then you can use it in your project like this
 ```tsx
 import image from 'ideal-img!../images/some-image.jpeg'
 
-export default function App() {
-    return (
-        <main>
-            <NativeIdealImage img={image} />
-        </main>
-    )
-}
+<NativeIdealImage img={image} />
+
+// or with require
+<NativeIdealImage img={require('ideal-img!../images/some-image.jpeg')} />
 ```
 
 By default, this will transform the image into a jpeg source and a webp source and also a webp format low quality placeholder, and end up like this
 
 ```html
 <picture
-    class="picture_x2na"
+    class="native-ideal-img"
     style="--lqip: url(data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAQCdASoQAAwABUB8JZQAAudcoVPyIAD+uVyF4iJZsGTWpdieB7utExa6oMeh0PusAA==);"
 >
     <source srcset="assets/native-ideal-image/some-image-b0600-2160.webp 2160w" type="image/webp" />
