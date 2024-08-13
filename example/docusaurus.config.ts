@@ -44,7 +44,7 @@ const config: Config = {
 			{
 				presets: {
 					card: {
-						sizes: [600, 1000],
+						sizes: [600, 800, 1000],
 						formats: ['avif', 'webp', 'jpeg'],
 					},
 				},

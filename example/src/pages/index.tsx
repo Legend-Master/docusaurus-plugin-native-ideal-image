@@ -59,7 +59,11 @@ export default function Home(): JSX.Element {
 function Card(props: { name: string; image: LoaderOutput; swapOnLoad?: boolean }) {
 	return (
 		<div className={clsx(styles.card, 'pagination-nav__link')}>
-			<NativeIdealImage img={props.image} className={styles.cardImage} />
+			<NativeIdealImage
+				img={props.image}
+				className={styles.cardImage}
+				swapOnLoad={props.swapOnLoad}
+			/>
 			<div>{props.name}</div>
 		</div>
 	)
