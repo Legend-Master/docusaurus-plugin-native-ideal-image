@@ -12,7 +12,9 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 	const formats = enabled ? data.formats : []
 	const lqip = enabled ? data.lqip : undefined
 
-	const singleImage = formats[0]?.srcSet.length === 1 ? formats[0] : undefined
+	const sizesAttr = sizes ?? 'auto'
+	const isSingleImage = formats[0]?.srcSet.length === 1 ? formats[0] : undefined
+	const largestImage = formats[0]?.srcSet[formats[0]?.srcSet.length - 1]!
 
 	const [placeHolderOnTop, setPlaceHolderOnTop] = useState(false)
 	const [loaded, setLoaded] = useState(false)
@@ -36,7 +38,9 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 		>
 			{formats.map((format) => (
 				<source
-					srcSet={format.srcSet.map((image) => `${image.path} ${image.width}w`).join(',')}
+					srcSet={format.srcSet
+						.map((image) => (isSingleImage ? image.path : `${image.path} ${image.width}w`))
+						.join(',')}
 					type={format.mime}
 					key={format.mime}
 				/>
@@ -45,9 +49,9 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 				// For disableInDev
 				src={src ?? enabled ? undefined : data}
 				loading={loading ?? 'lazy'}
-				sizes={sizes ?? 'auto'}
-				width={width ?? singleImage?.srcSet[0]?.width}
-				height={height ?? singleImage?.srcSet[0]?.height}
+				sizes={sizesAttr}
+				width={width ?? (isSingleImage || sizesAttr === 'auto') ? largestImage.width : undefined}
+				height={height ?? (isSingleImage || sizesAttr === 'auto') ? largestImage.height : undefined}
 				{...propsRest}
 			/>
 		</picture>
