@@ -51,7 +51,7 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 					srcSet={
 						isSingleImage
 							? format.srcSet[0]!.path
-							: format.srcSet.map((image) => `${image.path} ${image.width}w`).join(',')
+							: format.srcSet.map((image) => `${encodeURI(image.path)} ${image.width}w`).join(',')
 					}
 					type={format.mime}
 					key={format.mime}
