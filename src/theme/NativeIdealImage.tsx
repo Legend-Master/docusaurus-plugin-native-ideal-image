@@ -65,7 +65,7 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 						? !isSingleImage
 							? lastFormat!.srcSet.map((image) => `${image.path} ${image.width}w`).join(',')
 							: undefined
-						: data
+						: undefined
 				}
 				sizes={sizesAttr}
 				width={width ?? (isSingleImage || sizesAttr === 'auto') ? largestImage?.width : undefined}
