@@ -37,12 +37,13 @@ export const DEFAULT_LOADER_OPTIONS = {
 	disableInDev: false,
 } as const satisfies LoaderOptions
 
-export default async function loader(this: LoaderContext<LoaderOptions>, contentBuffer: Buffer) {
+export default async function loader(this: LoaderContext<LoaderOptions>, content: string) {
 	const callback = this.async()
 
 	const options = this.getOptions()
 	if (options.disableInDev && process.env.NODE_ENV !== 'production') {
-		callback(null, `module.exports = ${this.resourceQuery};`)
+		// Return the value from default asset loader
+		callback(null, content)
 		return
 	}
 

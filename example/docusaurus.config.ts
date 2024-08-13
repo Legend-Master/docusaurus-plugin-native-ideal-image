@@ -48,7 +48,7 @@ const config: Config = {
 						formats: ['avif', 'webp', 'jpeg'],
 					},
 				},
-				// disableInDev: false,
+				// disableInDev: true,
 			} satisfies NativeIdealImageOptions,
 		],
 	],

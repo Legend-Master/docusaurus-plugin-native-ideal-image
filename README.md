@@ -1,6 +1,6 @@
 # Docusaurus Native Ideal Image Plugin
 
-A docuaurus plugin for pre-processing images to multiple formats, sizes and low quality image placeholders
+A docuaurus plugin for pre-processing images to multiple formats, sizes and low quality image placeholders, replacing [ideal-image](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-ideal-image)
 
 > Note: this is still working in progress
 
@@ -24,7 +24,7 @@ const config = {
 Then you can use it in your project like this
 
 ```tsx
-import image from '../images/some-image.jpeg'
+import image from 'ideal-img!../images/some-image.jpeg'
 
 export default function App() {
     return (
@@ -48,7 +48,15 @@ By default, this will transform the image into a jpeg source and a webp source a
 </picture>
 ```
 
-You can see more in the example directory or see some live examples in https://legend-master.github.io/docusaurus-plugin-native-ideal-image
+You can use query strings to change the output, currently you can do
+
+- `w`: changes the output sizes
+- `formats`: changes the formats used
+- `presets`: use a preset set in the config
+
+Example: `import image from 'ideal-img!../images/some-image.jpeg?w=800,1200&formats=avif,webp'`
+
+You can learn more in the example directory or see some live examples in https://legend-master.github.io/docusaurus-plugin-native-ideal-image
 
 ## TypeScript
 

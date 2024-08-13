@@ -7,9 +7,10 @@ import './NativeIdealImage.css'
 export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Element {
 	const { img, swapOnLoad, src, width, height, sizes, loading, ...propsRest } = props
 
-	const enabled = typeof img === 'object' && 'formats' in img
-	const formats = enabled ? img.formats : []
-	const lqip = enabled ? img.lqip : undefined
+	const data = typeof img === 'object' && 'default' in img ? img.default : img
+	const enabled = typeof data === 'object'
+	const formats = enabled ? data.formats : []
+	const lqip = enabled ? data.lqip : undefined
 
 	const singleImage = formats[0]?.srcSet.length === 1 ? formats[0] : undefined
 
@@ -42,7 +43,7 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 			))}
 			<img
 				// For disableInDev
-				src={src ?? enabled ? undefined : typeof img === 'string' ? img : img.default}
+				src={src ?? enabled ? undefined : data}
 				loading={loading ?? 'lazy'}
 				sizes={sizes ?? 'auto'}
 				width={width ?? singleImage?.srcSet[0]?.width}
