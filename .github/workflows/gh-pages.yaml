@@ -34,7 +34,7 @@ jobs:
         with:
           cache: npm
 
-      - run: npm install
+      - run: npm ci
       - run: npm run build
       - run: npm run build
         working-directory: example
