@@ -46,7 +46,7 @@ export type LoaderOutput = {
 	lqip?: string
 }
 
-export type NativeIdealImageProps = ComponentProps<'img'> & {
+export type NativeIdealImageProps = Omit<ComponentProps<'img'>, 'ref'> & {
 	readonly img: { default: string | LoaderOutput } | string | LoaderOutput
 	/**
 	 * Swap (fade in) the actual image after it's fully loaded,
