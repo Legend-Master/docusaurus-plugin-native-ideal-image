@@ -11,8 +11,8 @@ import {
 // import { fileURLToPath } from 'node:url'
 
 export type Preset = {
-	sizes?: number[]
-	formats?: SupportedOutputTypes[]
+	sizes?: number | number[]
+	formats?: SupportedOutputTypes | SupportedOutputTypes[]
 	lqip?: boolean
 }
 
