@@ -124,7 +124,7 @@ async function processImage(
 	let output: sharp.Sharp
 	switch (format) {
 		case 'jpeg':
-			output = resized.jpeg()
+			output = resized.jpeg({ progressive: size > 500 })
 			break
 		case 'webp':
 			output = resized.webp()
