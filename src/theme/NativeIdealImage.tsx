@@ -17,7 +17,7 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 	const sources = enabled ? data.formats.slice(0, data.formats.length - 1) : undefined
 	const lastFormat = enabled ? data.formats[data.formats.length - 1]! : undefined
 
-	const sizesAttr = sizes ?? 'auto'
+	const sizesAttr = sizes ?? enabled ? 'auto' : undefined
 	const isSingleImage = formats[0]?.srcSet.length === 1
 	const largestImage = formats[0]?.srcSet[formats[0]?.srcSet.length - 1]
 
@@ -50,7 +50,7 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 				<source
 					srcSet={
 						isSingleImage
-							? format.srcSet[0]!.path
+							? encodeURI(format.srcSet[0]!.path)
 							: format.srcSet.map((image) => `${encodeURI(image.path)} ${image.width}w`).join(',')
 					}
 					type={format.mime}
@@ -63,7 +63,9 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 				srcSet={
 					srcSet ?? enabled
 						? !isSingleImage
-							? lastFormat!.srcSet.map((image) => `${image.path} ${image.width}w`).join(',')
+							? lastFormat!.srcSet
+									.map((image) => `${encodeURI(image.path)} ${image.width}w`)
+									.join(',')
 							: undefined
 						: undefined
 				}
