@@ -1,8 +1,7 @@
 import type { LoaderContext } from 'webpack'
 import { readFile } from 'node:fs/promises'
-import sharp from 'sharp'
 import loaderUtils from 'loader-utils'
-import { type LoaderOutput, type LoaderOptions } from './index.js'
+import sharp from 'sharp'
 
 const MIMES = {
 	jpeg: 'image/jpeg',
@@ -22,6 +21,41 @@ export type SrcSetData = {
 export type OutputDataForFormat = {
 	mime: SupportedOutputMimeTypes
 	srcSet: SrcSetData[]
+}
+
+export type Preset = {
+	sizes?: number | number[]
+	formats?: SupportedOutputTypes | SupportedOutputTypes[]
+	lqip?: boolean
+}
+
+export type LoaderOptions = {
+	/**
+	 * File name template for output files
+	 */
+	fileNameTemplate: string
+	/**
+	 * Image loader presets
+	 */
+	presets: Record<string, Preset>
+	/**
+	 * Low quality image placeholder format
+	 */
+	lqipFormat: SupportedOutputTypes
+	/**
+	 * Disable in dev mode for faster compile time
+	 */
+	disableInDev: boolean
+}
+
+export type LoaderOutput = {
+	formats: OutputDataForFormat[]
+	// src: {
+	// 	fileName: string
+	// 	width: number
+	// 	height: number
+	// }
+	lqip?: string
 }
 
 export const DEFAULT_LOADER_OPTIONS = {

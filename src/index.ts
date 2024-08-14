@@ -1,59 +1,21 @@
 import path from 'node:path'
 import type { LoadContext, Plugin, OptionValidationContext } from '@docusaurus/types'
-import type { ComponentProps } from 'react'
-import {
-	DEFAULT_LOADER_OPTIONS,
-	type OutputDataForFormat,
-	type SupportedOutputMimeTypes,
-	type SupportedOutputTypes,
-} from './loader.js'
+import { DEFAULT_LOADER_OPTIONS, type LoaderOptions } from './loader.js'
 // import { Compilation, Compiler, NormalModule, type LoaderContext } from 'webpack'
 // import { fileURLToPath } from 'node:url'
 
-export type Preset = {
-	sizes?: number | number[]
-	formats?: SupportedOutputTypes | SupportedOutputTypes[]
-	lqip?: boolean
-}
-
-export type LoaderOptions = {
-	/**
-	 * File name template for output files
-	 */
-	fileNameTemplate: string
-	/**
-	 * Image loader presets
-	 */
-	presets: Record<string, Preset>
-	/**
-	 * Low quality image placeholder format
-	 */
-	lqipFormat: SupportedOutputTypes
-	/**
-	 * Disable in dev mode for faster compile time
-	 */
-	disableInDev: boolean
-}
+export type { NativeIdealImageProps } from './theme/NativeIdealImage.js'
+export type {
+	LoaderOutput,
+	DEFAULT_LOADER_OPTIONS,
+	SrcSetData,
+	SupportedOutputMimeTypes,
+	SupportedOutputTypes,
+	OutputDataForFormat,
+	LoaderOptions,
+	Preset,
+} from './loader.js'
 export type NativeIdealImageOptions = Partial<LoaderOptions>
-
-export type LoaderOutput = {
-	formats: OutputDataForFormat[]
-	// src: {
-	// 	fileName: string
-	// 	width: number
-	// 	height: number
-	// }
-	lqip?: string
-}
-
-export type NativeIdealImageProps = Omit<ComponentProps<'img'>, 'ref'> & {
-	readonly img: { default: string | LoaderOutput } | string | LoaderOutput
-	/**
-	 * Swap (fade in) the actual image after it's fully loaded,
-	 * requires JavaScript to work, so this might cause the image to load a bit slower
-	 * */
-	swapOnLoad?: boolean
-}
 
 export default function pluginNativeIdealImage(
 	context: LoadContext,

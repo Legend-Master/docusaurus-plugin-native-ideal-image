@@ -1,8 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, type ComponentProps } from 'react'
 import clsx from 'clsx'
-import type { NativeIdealImageProps } from '../index.js'
+import type { LoaderOutput } from '../index.js'
+import type { SrcSetData } from '../loader.js'
 
 import './NativeIdealImage.css'
+
+export type NativeIdealImageProps = Omit<ComponentProps<'img'>, 'ref'> & {
+	readonly img: { default: string | LoaderOutput } | string | LoaderOutput
+	/**
+	 * Swap (fade in) the actual image after it's fully loaded,
+	 * requires JavaScript to work, so this might cause the image to load a bit slower
+	 * */
+	swapOnLoad?: boolean
+}
 
 // This is kinda messy handling all those posibilities at a single place >.<
 export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Element {
@@ -47,25 +57,15 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 			onLoad={() => setLoaded(true)}
 		>
 			{sources?.map((format) => (
-				<source
-					srcSet={
-						isSingleImage
-							? encodeURI(format.srcSet[0]!.path)
-							: format.srcSet.map((image) => `${encodeURI(image.path)} ${image.width}w`).join(',')
-					}
-					type={format.mime}
-					key={format.mime}
-				/>
+				<source srcSet={getSource(format.srcSet)} type={format.mime} key={format.mime} />
 			))}
 			<img
 				loading={loading ?? 'lazy'}
-				src={src ?? enabled ? (isSingleImage ? lastFormat!.srcSet[0]!.path : undefined) : data}
+				src={src ?? enabled ? (isSingleImage ? getSource(lastFormat!.srcSet) : undefined) : data}
 				srcSet={
 					srcSet ?? enabled
 						? !isSingleImage
-							? lastFormat!.srcSet
-									.map((image) => `${encodeURI(image.path)} ${image.width}w`)
-									.join(',')
+							? getSource(lastFormat!.srcSet)
 							: undefined
 						: undefined
 				}
@@ -79,4 +79,11 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 			/>
 		</picture>
 	)
+}
+
+function getSource(srcSet: SrcSetData[]) {
+	if (srcSet.length === 1) {
+		return encodeURI(srcSet[0]!.path)
+	}
+	return srcSet.map((image) => `${encodeURI(image.path)} ${image.width}w`).join(',')
 }
