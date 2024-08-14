@@ -143,7 +143,7 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 async function createFiles(
 	context: LoaderContext<LoaderOptions>,
 	image: sharp.Sharp,
-	options: { formats: SupportedOutputTypes[]; sizes: number[] }
+	options: { formats: SupportedOutputTypes[]; sizes: number[] },
 ) {
 	const formats: OutputDataForFormat[] = []
 	for (const format of options.formats) {
@@ -160,7 +160,7 @@ async function processImage(
 	context: LoaderContext<LoaderOptions>,
 	image: sharp.Sharp,
 	size: number,
-	format: SupportedOutputTypes
+	format: SupportedOutputTypes,
 ) {
 	const resized = image.resize(size)
 	let output: sharp.Sharp

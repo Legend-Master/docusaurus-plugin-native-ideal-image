@@ -19,7 +19,7 @@ export type NativeIdealImageOptions = Partial<LoaderOptions>
 
 export default function pluginNativeIdealImage(
 	context: LoadContext,
-	options: NativeIdealImageOptions
+	options: NativeIdealImageOptions,
 ): Plugin<void> {
 	return {
 		name: 'docusaurus-plugin-native-ideal-image',

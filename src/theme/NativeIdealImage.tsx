@@ -27,7 +27,7 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 	const sources = enabled ? data.formats.slice(0, data.formats.length - 1) : undefined
 	const lastFormat = enabled ? data.formats[data.formats.length - 1]! : undefined
 
-	const sizesAttr = sizes ?? enabled ? 'auto' : undefined
+	const sizesAttr = (sizes ?? enabled) ? 'auto' : undefined
 	const isSingleImage = formats[0]?.srcSet.length === 1
 	const largestImage = formats[0]?.srcSet[formats[0]?.srcSet.length - 1]
 
@@ -61,18 +61,18 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 			))}
 			<img
 				loading={loading ?? 'lazy'}
-				src={src ?? enabled ? (isSingleImage ? getSource(lastFormat!.srcSet) : undefined) : data}
+				src={(src ?? enabled) ? (isSingleImage ? getSource(lastFormat!.srcSet) : undefined) : data}
 				srcSet={
-					srcSet ?? enabled
+					(srcSet ?? enabled)
 						? !isSingleImage
 							? getSource(lastFormat!.srcSet)
 							: undefined
 						: undefined
 				}
 				sizes={sizesAttr}
-				width={width ?? (isSingleImage || sizesAttr === 'auto') ? largestImage?.width : undefined}
+				width={(width ?? (isSingleImage || sizesAttr === 'auto')) ? largestImage?.width : undefined}
 				height={
-					height ?? (isSingleImage || sizesAttr === 'auto') ? largestImage?.height : undefined
+					(height ?? (isSingleImage || sizesAttr === 'auto')) ? largestImage?.height : undefined
 				}
 				ref={imageEl}
 				{...propsRest}
