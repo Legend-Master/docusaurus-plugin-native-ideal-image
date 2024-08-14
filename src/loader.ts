@@ -172,13 +172,13 @@ async function processImage(
 	let output: sharp.Sharp
 	switch (format) {
 		case 'jpeg':
-			output = resized.jpeg({ progressive: size > 500 })
+			output = resized.jpeg({ quality: 75, progressive: size > 500 })
 			break
 		case 'webp':
-			output = resized.webp()
+			output = resized.webp({ quality: 75 })
 			break
 		case 'avif':
-			output = resized.avif()
+			output = resized.avif({ quality: 50 })
 			break
 	}
 	const data = await output.toBuffer()
