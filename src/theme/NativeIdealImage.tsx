@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState, type ComponentProps } from 'react'
 import clsx from 'clsx'
-import type { LoaderOutput } from '../index.js'
+import type { NativeIdealImageData } from '../index.js'
 import type { SrcSetData } from '../loader.js'
 
 import './NativeIdealImage.css'
 
 export type NativeIdealImageProps = Omit<ComponentProps<'img'>, 'ref'> & {
-	readonly img: { default: string | LoaderOutput } | string | LoaderOutput
+	/** The output of `import('ideal-img!./some-image.jpeg')` */
+	readonly img: { default: string | NativeIdealImageData } | string | NativeIdealImageData
 	/**
 	 * Swap (fade in) the actual image after it's fully loaded,
 	 * requires JavaScript to work, so this might cause the image to load a bit slower
@@ -18,23 +19,37 @@ export type NativeIdealImageProps = Omit<ComponentProps<'img'>, 'ref'> & {
 export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Element {
 	const { img, swapOnLoad, src, srcSet, width, height, sizes, loading, ...propsRest } = props
 
+	// When disableInDev in true, img will be a string or a { default: string } pointing to the image
 	const data = typeof img === 'object' && 'default' in img ? img.default : img
-	// For disableInDev
 	const enabled = typeof data === 'object'
 	const formats = enabled ? data.formats : []
-	const lqip = enabled ? data.lqip : undefined
+	const lqip = enabled && data.lqip
 
-	const sources = enabled ? data.formats.slice(0, data.formats.length - 1) : undefined
-	const lastFormat = enabled ? data.formats[data.formats.length - 1]! : undefined
+	// Put the last source on the img element and the others on source elements
+	const sources = formats.slice(0, -1)
+	const lastFormat = formats[formats.length - 1]
 
 	const sizesAttr = (sizes ?? enabled) ? 'auto' : undefined
 	const isSingleImage = formats[0]?.srcSet.length === 1
 	const largestImage = formats[0]?.srcSet[formats[0]?.srcSet.length - 1]
 
+	let imgSrc = src
+	let imgSrcSet = srcSet
+	if (enabled) {
+		// lastFormat much exist when loader is enabled
+		if (isSingleImage) {
+			imgSrc ??= getSource(lastFormat!.srcSet)
+		} else {
+			imgSrcSet ??= getSource(lastFormat!.srcSet)
+		}
+	} else {
+		imgSrc ??= data
+	}
+
 	const [placeHolderOnTop, setPlaceHolderOnTop] = useState(false)
 	const [loaded, setLoaded] = useState(false)
-
 	const imageEl = useRef<HTMLImageElement>(null)
+
 	useEffect(() => {
 		if (imageEl.current?.complete) {
 			setLoaded(true)
@@ -56,19 +71,13 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 			style={lqip ? ({ '--lqip': `url(${lqip})` } as React.CSSProperties) : undefined}
 			onLoad={() => setLoaded(true)}
 		>
-			{sources?.map((format) => (
+			{sources.map((format) => (
 				<source srcSet={getSource(format.srcSet)} type={format.mime} key={format.mime} />
 			))}
 			<img
 				loading={loading ?? 'lazy'}
-				src={(src ?? enabled) ? (isSingleImage ? getSource(lastFormat!.srcSet) : undefined) : data}
-				srcSet={
-					(srcSet ?? enabled)
-						? !isSingleImage
-							? getSource(lastFormat!.srcSet)
-							: undefined
-						: undefined
-				}
+				src={imgSrc}
+				srcSet={imgSrcSet}
 				sizes={sizesAttr}
 				width={(width ?? (isSingleImage || sizesAttr === 'auto')) ? largestImage?.width : undefined}
 				height={
@@ -81,9 +90,8 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 	)
 }
 
-function getSource(srcSet: SrcSetData[]) {
-	if (srcSet.length === 1) {
-		return encodeURI(srcSet[0]!.path)
-	}
-	return srcSet.map((image) => `${encodeURI(image.path)} ${image.width}w`).join(',')
+function getSource(srcSet: SrcSetData[]): string {
+	return srcSet.length === 1
+		? encodeURI(srcSet[0]!.path)
+		: srcSet.map((image) => `${encodeURI(image.path)} ${image.width}w`).join(',')
 }

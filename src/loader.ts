@@ -48,7 +48,7 @@ export type LoaderOptions = {
 	disableInDev: boolean
 }
 
-export type LoaderOutput = {
+export type NativeIdealImageData = {
 	formats: OutputDataForFormat[]
 	// src: {
 	// 	fileName: string
@@ -136,7 +136,7 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 		formats: files,
 		// src: files[0]![files.length - 1]!,
 		lqip,
-	} satisfies LoaderOutput
+	} satisfies NativeIdealImageData
 	callback(null, `export default ${JSON.stringify(output)}`)
 }
 
@@ -144,7 +144,7 @@ async function createFiles(
 	context: LoaderContext<LoaderOptions>,
 	image: sharp.Sharp,
 	options: { formats: SupportedOutputTypes[]; sizes: number[] },
-) {
+): Promise<OutputDataForFormat[]> {
 	const formats: OutputDataForFormat[] = []
 	for (const format of options.formats) {
 		const output: Promise<SrcSetData>[] = []
@@ -161,7 +161,7 @@ async function processImage(
 	image: sharp.Sharp,
 	size: number,
 	format: SupportedOutputTypes,
-) {
+): Promise<SrcSetData> {
 	const resized = image.resize(size)
 	let output: sharp.Sharp
 	switch (format) {

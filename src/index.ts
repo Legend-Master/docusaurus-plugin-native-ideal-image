@@ -6,7 +6,7 @@ import { DEFAULT_LOADER_OPTIONS, type LoaderOptions } from './loader.js'
 
 export type { NativeIdealImageProps } from './theme/NativeIdealImage.js'
 export type {
-	LoaderOutput,
+	NativeIdealImageData,
 	DEFAULT_LOADER_OPTIONS,
 	SrcSetData,
 	SupportedOutputMimeTypes,

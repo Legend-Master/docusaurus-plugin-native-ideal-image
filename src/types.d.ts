@@ -1,5 +1,5 @@
 declare module 'ideal-img!*' {
-	const x: import('./index.ts').LoaderOutput
+	const x: import('./index.ts').NativeIdealImageData
 	export default x
 }
 

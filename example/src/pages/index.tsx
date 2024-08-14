@@ -5,7 +5,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import Layout from '@theme/Layout'
 import Heading from '@theme/Heading'
 import NativeIdealImage from '@theme/NativeIdealImage'
-import type { LoaderOutput } from 'docusaurus-plugin-native-ideal-image'
+import type { NativeIdealImageProps } from 'docusaurus-plugin-native-ideal-image'
 
 import stoneRoadImage from 'ideal-img!../../images/stone-road.webp?preset=card'
 
@@ -56,7 +56,7 @@ export default function Home(): JSX.Element {
 	)
 }
 
-function Card(props: { name: string; image: LoaderOutput; swapOnLoad?: boolean }) {
+function Card(props: { name: string; image: NativeIdealImageProps['img']; swapOnLoad?: boolean }) {
 	return (
 		<div className={clsx(styles.card, 'pagination-nav__link')}>
 			<NativeIdealImage
