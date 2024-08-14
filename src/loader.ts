@@ -13,7 +13,10 @@ export type SupportedOutputTypes = keyof typeof MIMES
 export type SupportedOutputMimeTypes = (typeof MIMES)[SupportedOutputTypes]
 
 export type Preset = {
-	/** Sizes (width) to generate */
+	/**
+	 * Sizes (width) to generate,
+	 * will not resize the image to be larger than the original
+	 * */
 	sizes?: number | number[]
 	/** Formats to generate */
 	formats?: SupportedOutputTypes | SupportedOutputTypes[]
@@ -102,7 +105,7 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 		sizes.push(...new Set(w.split(',').map((size) => Math.min(Number(size), orginalWidth))))
 	} else {
 		const presetSizes = typeof preset?.sizes === 'number' ? [preset.sizes] : preset?.sizes
-		sizes.push(...(presetSizes || []))
+		sizes.push(...new Set(presetSizes?.map((size) => Math.min(size, orginalWidth))))
 	}
 	if (sizes.length === 0) {
 		sizes.push(orginalWidth)
