@@ -12,20 +12,12 @@ const MIMES = {
 export type SupportedOutputTypes = keyof typeof MIMES
 export type SupportedOutputMimeTypes = (typeof MIMES)[SupportedOutputTypes]
 
-export type SrcSetData = {
-	path: string
-	width: number
-	height: number
-}
-
-export type OutputDataForFormat = {
-	mime: SupportedOutputMimeTypes
-	srcSet: SrcSetData[]
-}
-
 export type Preset = {
+	/** Sizes (width) to generate */
 	sizes?: number | number[]
+	/** Formats to generate */
 	formats?: SupportedOutputTypes | SupportedOutputTypes[]
+	/** Set to `false` to disable low quality image placeholder generation */
 	lqip?: boolean
 }
 
@@ -46,6 +38,17 @@ export type LoaderOptions = {
 	 * Disable in dev mode for faster compile time
 	 */
 	disableInDev: boolean
+}
+
+export type SrcSetData = {
+	path: string
+	width: number
+	height: number
+}
+
+export type OutputDataForFormat = {
+	mime: SupportedOutputMimeTypes
+	srcSet: SrcSetData[]
 }
 
 export type NativeIdealImageData = {
