@@ -17,10 +17,11 @@
 	},
 	"scripts": {
 		"build": "tsc -p ./src && npm run copy-css",
+		"clean-build": "npm run clean-lib-folder && npm run build",
 		"watch": "tsc -p ./src --watch",
 		"copy-css": "node scripts/copy-css.js",
 		"clean-lib-folder": "node scripts/clean-lib-folder.js",
-		"prepublishOnly": "npm run clean-lib-folder && npm run build"
+		"prepublishOnly": "npm run clean-build"
 	},
 	"devDependencies": {
 		"@types/loader-utils": "^2.0.6",
