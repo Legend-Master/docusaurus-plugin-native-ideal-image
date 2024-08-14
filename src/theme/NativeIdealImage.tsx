@@ -9,8 +9,12 @@ export type NativeIdealImageProps = Omit<ComponentProps<'img'>, 'ref'> & {
 	/** The output of `import('ideal-img!./some-image.jpeg')` */
 	readonly img: { default: string | NativeIdealImageData } | string | NativeIdealImageData
 	/**
-	 * Swap (fade in) the actual image after it's fully loaded,
-	 * requires JavaScript to work, so this might cause the image to load a bit slower
+	 * Swap (fade in) the actual image after it's fully loaded
+	 *
+	 * Note: this requires JavaScript to work,
+	 * so will not work if the script is loaded after the image,
+	 * and also if the image is half loaded when the script kicks in,
+	 * the partially loaded image will get covered by the low quality placeholder
 	 * */
 	swapOnLoad?: boolean
 }
@@ -51,15 +55,16 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 	const imageEl = useRef<HTMLImageElement>(null)
 
 	useEffect(() => {
+		if (loaded) {
+			return
+		}
 		if (imageEl.current?.complete) {
 			setLoaded(true)
 			return
 		}
-		if (!loaded) {
-			// Prevent fade in if we have the image cache available (likely being a back/forward navigation)
-			const id = setTimeout(() => setPlaceHolderOnTop(true), 50)
-			return () => clearTimeout(id)
-		}
+		// Prevent fade in if we have the image cache available (likely being a back/forward navigation)
+		const id = setTimeout(() => setPlaceHolderOnTop(true), 50)
+		return () => clearTimeout(id)
 	}, [loaded])
 
 	return (
