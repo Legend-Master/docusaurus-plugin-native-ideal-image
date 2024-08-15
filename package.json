@@ -2,7 +2,9 @@
 	"name": "docusaurus-plugin-native-ideal-image",
 	"version": "0.0.9",
 	"description": "Pre-process images to multiple formats and low quality image placeholders",
-	"keywords": ["docusaurus"],
+	"keywords": [
+		"docusaurus"
+	],
 	"author": "Tony",
 	"license": "MIT",
 	"repository": {
@@ -24,6 +26,7 @@
 		"prepublishOnly": "npm run clean-build"
 	},
 	"devDependencies": {
+		"@docusaurus/module-type-aliases": "^3.5.1",
 		"@types/loader-utils": "^2.0.6",
 		"@types/node": "20.x",
 		"prettier": "^3.3.3",

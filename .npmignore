@@ -3,5 +3,4 @@ example/
 scripts/
 
 tsconfig.base.json
-src/missing-types.d.ts
 src/tsconfig.json
