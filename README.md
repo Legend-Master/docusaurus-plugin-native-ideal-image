@@ -61,7 +61,7 @@ By default, this will transform the image into a jpeg source and a webp source a
     style="--lqip: url(data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAQCdASoQAAwABUB8JZQAAudcoVPyIAD+uVyF4iJZsGTWpdieB7utExa6oMeh0PusAA==);"
 >
     <source srcset="assets/native-ideal-image/some-image-b0600-2160.webp" type="image/webp" />
-    <img loading="lazy" src="assets/native-ideal-image/some-image-6ee75-2160.jpeg" sizes="auto" width="2160" height="1620" />
+    <img loading="lazy" src="assets/native-ideal-image/some-image-6ee75-2160.jpeg" width="2160" height="1620" />
 </picture>
 ```
 
