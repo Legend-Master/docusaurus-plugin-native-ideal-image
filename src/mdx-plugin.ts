@@ -4,12 +4,16 @@ import type { Parent } from 'unist'
 import { visit, EXIT } from 'unist-util-visit'
 import { assetRequireAttributeValue, transformNode } from './utils.js'
 
-export type RemarkPluginOptions = {
+export type RemarkPluginOptions = Partial<{
 	/**
 	 * The image loader preset to use
 	 */
 	preset: string
-}
+	/**
+	 * Swap (fade in) the actual image after it's fully loaded
+	 */
+	swapOnLoad: boolean
+}>
 
 export default function plugin(options: RemarkPluginOptions): Transformer {
 	const queryString = options.preset ? `?preset=${options.preset}` : ''
@@ -40,6 +44,13 @@ export default function plugin(options: RemarkPluginOptions): Transformer {
 						name: 'img',
 						value: assetRequireAttributeValue(`ideal-img!${src}${queryString}`),
 					})
+					if (options.swapOnLoad) {
+						attributes.push({
+							type: 'mdxJsxAttribute',
+							name: 'swapOnLoad',
+							value: 'true',
+						})
+					}
 					transformNode(node, {
 						type: 'mdxJsxFlowElement',
 						name: 'NativeIdealImage',

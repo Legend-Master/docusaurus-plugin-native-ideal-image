@@ -4,6 +4,7 @@ import { themes } from 'prism-react-renderer'
 import {
 	nativeIdealImageRemarkPlugin,
 	type NativeIdealImageOptions,
+	type NativeIdealImageRemarkPluginOptions,
 } from 'docusaurus-plugin-native-ideal-image'
 
 const config: Config = {
@@ -35,7 +36,14 @@ const config: Config = {
 				docs: false,
 				blog: false,
 				pages: {
-					remarkPlugins: [nativeIdealImageRemarkPlugin],
+					remarkPlugins: [
+						[
+							nativeIdealImageRemarkPlugin,
+							{
+								swapOnLoad: true,
+							} satisfies NativeIdealImageRemarkPluginOptions,
+						],
+					],
 				},
 				theme: {
 					customCss: './src/css/custom.css',
