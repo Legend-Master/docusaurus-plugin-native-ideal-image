@@ -1,13 +1,12 @@
 import path from 'node:path'
 import type { LoadContext, Plugin, OptionValidationContext } from '@docusaurus/types'
-import { DEFAULT_LOADER_OPTIONS, type LoaderOptions } from './loader.js'
+import type { LoaderOptions, Preset, SupportedOutputTypes } from './loader.js'
 // import { Compilation, Compiler, NormalModule, type LoaderContext } from 'webpack'
 // import { fileURLToPath } from 'node:url'
 
 export type { NativeIdealImageProps } from './theme/NativeIdealImage.js'
 export type {
 	NativeIdealImageData,
-	DEFAULT_LOADER_OPTIONS,
 	SrcSetData,
 	SupportedOutputMimeTypes,
 	SupportedOutputTypes,
@@ -15,7 +14,38 @@ export type {
 	LoaderOptions,
 	Preset,
 } from './loader.js'
-export type NativeIdealImageOptions = Partial<LoaderOptions>
+
+export type NativeIdealImageOptions = Partial<{
+	/**
+	 * File name template for output files
+	 */
+	fileNameTemplate: string
+	/**
+	 * Image loader presets
+	 */
+	presets: Record<string, Preset>
+	/**
+	 * Low quality image placeholder format
+	 */
+	lqipFormat: SupportedOutputTypes
+	/**
+	 * Disable in dev mode for faster compile time
+	 */
+	disableInDev: boolean
+}>
+
+export const DEFAULT_OPTIONS = {
+	fileNameTemplate: 'assets/native-ideal-image/[name]-[hash:hex:5]-[width].[format]',
+	lqipFormat: 'webp',
+	presets: {
+		default: {
+			formats: ['webp', 'jpeg'],
+			sizes: 2160,
+			lqip: true,
+		},
+	},
+	disableInDev: false,
+} as const satisfies NativeIdealImageOptions
 
 export default function pluginNativeIdealImage(
 	context: LoadContext,
@@ -32,26 +62,31 @@ export default function pluginNativeIdealImage(
 			return '../src/theme'
 		},
 
-		configureWebpack(_config, isServer) {
-			// const { disableInDev, presets, ...loaderOptions } = {
-			// 	...settings,
-			// 	...options,
-			// }
+		configureWebpack(config, isServer) {
+			const { disableInDev, ...optionsRest } = {
+				...DEFAULT_OPTIONS,
+				...options,
+				presets: { ...DEFAULT_OPTIONS.presets, ...options.presets },
+			}
+			const mergedOptions = {
+				disabled: disableInDev && process.env.NODE_ENV !== 'production',
+				...optionsRest,
+			} satisfies LoaderOptions
 
 			return {
 				// plugins: [idealImageUriPlugin],
+				// mergeStrategy: { 'module.rules.test': 'match', 'module.rules.test.use': 'prepend' },
 				// module: {
 				// 	rules: [
 				// 		{
-				// 			test: /\.(?:png|jpe?g|webp)/i,
-				// 			// test: /.*/,
-				// 			// scheme: 'ideal-img',
+				// 			test: /\.(?:ico|jpe?g|png|gif|webp|avif)(?:\?.*)?$/i,
 				// 			use: [
 				// 				{
 				// 					loader: path.resolve(__dirname, './loader.js'),
 				// 					options: {
-				// 						...loaderOptions,
-				// 						presets: { ...DEFAULT_OPTIONS.presets, ...presets },
+				// 						...DEFAULT_LOADER_OPTIONS,
+				// 						...options,
+				// 						presets: { ...DEFAULT_LOADER_OPTIONS.presets, ...options.presets },
 				// 					},
 				// 				},
 				// 			],
@@ -60,11 +95,7 @@ export default function pluginNativeIdealImage(
 				// },
 				resolveLoader: {
 					alias: {
-						'ideal-img': `${path.resolve(__dirname, './loader.js')}?${JSON.stringify({
-							...DEFAULT_LOADER_OPTIONS,
-							...options,
-							presets: { ...DEFAULT_LOADER_OPTIONS.presets, ...options.presets },
-						})}`,
+						'ideal-img': `${path.resolve(__dirname, './loader.js')}?${JSON.stringify(mergedOptions)}`,
 					},
 				},
 			}

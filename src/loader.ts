@@ -1,5 +1,4 @@
 import type { LoaderContext } from 'webpack'
-import { readFile } from 'node:fs/promises'
 import loaderUtils from 'loader-utils'
 import sharp from 'sharp'
 
@@ -38,9 +37,9 @@ export type LoaderOptions = {
 	 */
 	lqipFormat: SupportedOutputTypes
 	/**
-	 * Disable in dev mode for faster compile time
+	 * Should disable the loader
 	 */
-	disableInDev: boolean
+	disabled: boolean
 }
 
 export type SrcSetData = {
@@ -64,33 +63,30 @@ export type NativeIdealImageData = {
 	lqip?: string
 }
 
-export const DEFAULT_LOADER_OPTIONS = {
-	fileNameTemplate: 'assets/native-ideal-image/[name]-[hash:hex:5]-[width].[format]',
-	lqipFormat: 'webp',
-	presets: {
-		default: {
-			formats: ['webp', 'jpeg'],
-			sizes: 2160,
-			lqip: true,
-		},
-	},
-	disableInDev: false,
-} as const satisfies LoaderOptions
+export const raw = true
 
-export default async function loader(this: LoaderContext<LoaderOptions>, content: string) {
-	const callback = this.async()
-
+export function pitch(this: LoaderContext<LoaderOptions>) {
 	const options = this.getOptions()
-	if (options.disableInDev && process.env.NODE_ENV !== 'production') {
+	if (!options.disabled) {
+		// Remove all other loaders,
+		// used for preventing the default url/file loader from generating extra images
+		this.loaders = [this.loaders[this.loaderIndex]!]
+	}
+}
+
+export default async function loader(this: LoaderContext<LoaderOptions>, content: Buffer) {
+	const callback = this.async()
+	const options = this.getOptions()
+
+	if (options.disabled) {
 		// Return the value from default asset loader
-		callback(null, content)
+		this.callback(null, content)
 		return
 	}
 
 	const queryOptions = new URLSearchParams(this.resourceQuery)
 
-	const buffer = await readFile(this.resourcePath)
-	const image = sharp(buffer)
+	const image = sharp(content)
 	const metadata = await image.metadata()
 	const orginalWidth = metadata.width
 	if (!orginalWidth) {
