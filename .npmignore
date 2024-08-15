@@ -2,5 +2,7 @@
 example/
 scripts/
 
+.prettierrc.yaml
+
 tsconfig.base.json
 src/tsconfig.json
