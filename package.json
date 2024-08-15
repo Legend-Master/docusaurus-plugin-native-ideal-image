@@ -1,6 +1,6 @@
 {
 	"name": "docusaurus-plugin-native-ideal-image",
-	"version": "0.0.9",
+	"version": "0.1.0",
 	"description": "Pre-process images to multiple formats and low quality image placeholders",
 	"keywords": [
 		"docusaurus"
@@ -27,6 +27,7 @@
 	},
 	"devDependencies": {
 		"@docusaurus/module-type-aliases": "^3.5.1",
+		"@docusaurus/types": "^3.5.2",
 		"@types/loader-utils": "^2.0.6",
 		"@types/node": "20.x",
 		"prettier": "^3.3.3",
@@ -34,7 +35,6 @@
 	},
 	"dependencies": {
 		"@docusaurus/core": "^3.5.1",
-		"@docusaurus/types": "^3.5.1",
 		"clsx": "^2.1.1",
 		"loader-utils": "^3.3.1",
 		"mdast-util-mdx": "^3.0.0",
