@@ -25,8 +25,6 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 	const data = 'default' in img ? img.default : img
 	const { lqip, formats } = data
 
-	const sizesAttr = sizes ?? 'auto'
-
 	// Put the last source on the img element and the others on source elements
 	const sources = formats.slice(0, -1)
 	const lastFormat = formats[formats.length - 1]!
@@ -41,6 +39,7 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 	} else {
 		imgSrcSet ??= getSource(lastFormat.srcSet)
 	}
+	const sizesAttr = sizes ?? (imgSrcSet ? 'auto' : undefined)
 
 	const [placeHolderOnTop, setPlaceHolderOnTop] = useState(false)
 	const [loaded, setLoaded] = useState(false)
