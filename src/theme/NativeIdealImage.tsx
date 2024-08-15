@@ -7,7 +7,7 @@ import './NativeIdealImage.css'
 
 export type NativeIdealImageProps = Omit<ComponentProps<'img'>, 'ref'> & {
 	/** The output of `import('ideal-img!./some-image.jpeg')` */
-	readonly img: { default: string | NativeIdealImageData } | string | NativeIdealImageData
+	readonly img: { default: NativeIdealImageData } | NativeIdealImageData
 	/**
 	 * Swap (fade in) the actual image after it's fully loaded
 	 *
@@ -19,35 +19,27 @@ export type NativeIdealImageProps = Omit<ComponentProps<'img'>, 'ref'> & {
 	swapOnLoad?: boolean
 }
 
-// This is kinda messy handling all those posibilities at a single place >.<
 export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Element {
 	const { img, swapOnLoad, src, srcSet, width, height, sizes, loading, ...propsRest } = props
 
-	// When disableInDev in true, img will be a string or a { default: string } pointing to the image
-	const data = typeof img === 'object' && 'default' in img ? img.default : img
-	const enabled = typeof data === 'object'
-	const formats = enabled ? data.formats : []
-	const lqip = enabled && data.lqip
+	const data = 'default' in img ? img.default : img
+	const { lqip, formats } = data
+
+	const sizesAttr = sizes ?? 'auto'
 
 	// Put the last source on the img element and the others on source elements
 	const sources = formats.slice(0, -1)
-	const lastFormat = formats[formats.length - 1]
+	const lastFormat = formats[formats.length - 1]!
 
-	const sizesAttr = (sizes ?? enabled) ? 'auto' : undefined
-	const isSingleImage = formats[0]?.srcSet.length === 1
-	const largestImage = formats[0]?.srcSet[formats[0]?.srcSet.length - 1]
+	const isSingleImage = lastFormat?.srcSet.length === 1
+	const largestImage = lastFormat.srcSet[lastFormat.srcSet.length - 1]!
 
 	let imgSrc = src
 	let imgSrcSet = srcSet
-	if (enabled) {
-		// lastFormat much exist when loader is enabled
-		if (isSingleImage) {
-			imgSrc ??= getSource(lastFormat!.srcSet)
-		} else {
-			imgSrcSet ??= getSource(lastFormat!.srcSet)
-		}
+	if (isSingleImage) {
+		imgSrc ??= getSource(lastFormat.srcSet)
 	} else {
-		imgSrc ??= data
+		imgSrcSet ??= getSource(lastFormat.srcSet)
 	}
 
 	const [placeHolderOnTop, setPlaceHolderOnTop] = useState(false)
@@ -84,9 +76,9 @@ export default function NativeIdealImage(props: NativeIdealImageProps): JSX.Elem
 				src={imgSrc}
 				srcSet={imgSrcSet}
 				sizes={sizesAttr}
-				width={(width ?? (isSingleImage || sizesAttr === 'auto')) ? largestImage?.width : undefined}
+				width={(width ?? (isSingleImage || sizesAttr === 'auto')) ? largestImage.width : undefined}
 				height={
-					(height ?? (isSingleImage || sizesAttr === 'auto')) ? largestImage?.height : undefined
+					(height ?? (isSingleImage || sizesAttr === 'auto')) ? largestImage.height : undefined
 				}
 				ref={imageEl}
 				{...propsRest}

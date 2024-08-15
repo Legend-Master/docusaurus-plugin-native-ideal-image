@@ -66,33 +66,50 @@ export type NativeIdealImageData = {
 export const raw = true
 
 export function pitch(this: LoaderContext<LoaderOptions>) {
-	const options = this.getOptions()
-	if (!options.disabled) {
-		// Remove all other loaders,
-		// used for preventing the default url/file loader from generating extra images
-		this.loaders = [this.loaders[this.loaderIndex]!]
-	}
+	// Remove all other loaders,
+	// used for preventing the default url/file loader from generating extra images
+	this.loaders = [this.loaders[this.loaderIndex]!]
 }
 
-export default async function loader(this: LoaderContext<LoaderOptions>, content: Buffer) {
+export default async function loader(this: LoaderContext<LoaderOptions>, buffer: Buffer) {
 	const callback = this.async()
-	const options = this.getOptions()
 
-	if (options.disabled) {
-		// Return the value from default asset loader
-		this.callback(null, content)
-		return
-	}
-
-	const queryOptions = new URLSearchParams(this.resourceQuery)
-
-	const image = sharp(content)
+	const image = sharp(buffer)
 	const metadata = await image.metadata()
 	const orginalWidth = metadata.width
 	if (!orginalWidth) {
 		throw `Can't get the width of this image (${this.resourcePath})`
 	}
 
+	const options = this.getOptions()
+	if (options.disabled) {
+		const height = metadata.height!
+		const format = metadata.format!
+		if (!(format && format in MIMES)) {
+			this.getLogger().warn(
+				`Can't get the format of this image or this image type is not supported (${this.resourcePath}), fallback to jpeg`,
+			)
+		}
+		const path = emitFile(this, {
+			width: orginalWidth,
+			height,
+			buffer,
+			format,
+		})
+		const output = {
+			formats: [
+				{
+					mime: MIMES[format as SupportedOutputTypes] ?? 'image/jpeg',
+					srcSet: [{ path, width: orginalWidth, height }],
+				},
+			],
+		} satisfies NativeIdealImageData
+		callback(null, generateOutput(output))
+		generateOutput
+		return
+	}
+
+	const queryOptions = new URLSearchParams(this.resourceQuery)
 	const preset = options.presets[queryOptions.get('preset') || 'default']
 
 	const sizes: number[] = []
@@ -139,7 +156,7 @@ export default async function loader(this: LoaderContext<LoaderOptions>, content
 		// src: files[0]![files.length - 1]!,
 		lqip,
 	} satisfies NativeIdealImageData
-	callback(null, `export default ${JSON.stringify(output)}`)
+	callback(null, generateOutput(output))
 }
 
 async function createFiles(
@@ -177,16 +194,32 @@ async function processImage(
 			output = resized.avif({ quality: 50 })
 			break
 	}
-	const data = await output.toBuffer()
-	const metadata = await sharp(data).metadata()
+	const buffer = await output.toBuffer()
+	const metadata = await sharp(buffer).metadata()
+	const width = metadata.width!
+	const height = metadata.height!
+	const path = emitFile(context, { width, height, buffer, format })
+	return { path, width, height }
+}
+
+function emitFile(
+	context: LoaderContext<LoaderOptions>,
+	data: {
+		buffer: Buffer
+		width: number
+		height: number
+		format: string
+	},
+) {
 	const options = context.getOptions()
 	const path = loaderUtils
-		.interpolateName(context, options.fileNameTemplate, { content: data })
-		.replaceAll('[width]', String(metadata.width))
-		.replaceAll('[height]', String(metadata.height))
-		.replaceAll('[format]', format)
-	context.emitFile(path, data)
-	return { path, width: metadata.width!, height: metadata.height! }
+		.interpolateName(context, options.fileNameTemplate, { content: data.buffer })
+		.replaceAll('[width]', String(data.width))
+		.replaceAll('[height]', String(data.height))
+		.replaceAll('[format]', data.format)
+	context.emitFile(path, data.buffer)
+	/** __webpack_public_path__ is handled by {@link generateOutput} */
+	return '__webpack_public_path__' + path
 }
 
 async function toBase64Lqip(image: sharp.Sharp, imageType: SupportedOutputTypes) {
@@ -206,4 +239,13 @@ async function toBase64Lqip(image: sharp.Sharp, imageType: SupportedOutputTypes)
 	}
 	const data = await output.toBuffer()
 	return `data:${mimeType};base64,${data.toString('base64')}`
+}
+
+function generateOutput(output: NativeIdealImageData) {
+	const out = JSON.stringify(output)
+	// Replace __webpack_public_path__ literal with __webpack_public_path__ variable
+	// { "path": "__webpack_public_path__/assets/img.jpeg" }
+	// to
+	// { "path": __webpack_public_path__ + "/assets/img.jpeg" }
+	return `export default ${out.replaceAll(`"__webpack_public_path__`, `__webpack_public_path__ + "`)}`
 }
