@@ -1,7 +1,10 @@
 import type { Config } from '@docusaurus/types'
 import type * as Preset from '@docusaurus/preset-classic'
 import { themes } from 'prism-react-renderer'
-import type { NativeIdealImageOptions } from 'docusaurus-plugin-native-ideal-image'
+import {
+	nativeIdealImageRemarkPlugin,
+	type NativeIdealImageOptions,
+} from 'docusaurus-plugin-native-ideal-image'
 
 const config: Config = {
 	title: 'Docusaurus Native Ideal Image Plugin',
@@ -31,6 +34,9 @@ const config: Config = {
 			{
 				docs: false,
 				blog: false,
+				pages: {
+					remarkPlugins: [nativeIdealImageRemarkPlugin],
+				},
 				theme: {
 					customCss: './src/css/custom.css',
 				},

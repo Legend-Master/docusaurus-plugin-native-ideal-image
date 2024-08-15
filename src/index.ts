@@ -47,6 +47,8 @@ export const DEFAULT_OPTIONS = {
 	disableInDev: false,
 } as const satisfies NativeIdealImageOptions
 
+export { default as nativeIdealImageRemarkPlugin } from './mdx-plugin.js'
+
 export default function pluginNativeIdealImage(
 	context: LoadContext,
 	options: NativeIdealImageOptions,

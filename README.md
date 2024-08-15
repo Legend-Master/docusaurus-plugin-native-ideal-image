@@ -32,6 +32,27 @@ import image from 'ideal-img!../images/some-image.jpeg'
 <NativeIdealImage img={require('ideal-img!../images/some-image.jpeg')} />
 ```
 
+To use it for markdown images by default, add this to the configuration
+
+```js
+import { nativeIdealImageRemarkPlugin } from 'docusaurus-plugin-native-ideal-image'
+
+const config = {
+    presets: [
+        [
+            'classic',
+            {
+                // The same for docs and blog
+                pages: {
+                    remarkPlugins: [nativeIdealImageRemarkPlugin],
+                },
+                ...
+            },
+        ],
+    ],
+}
+```
+
 By default, this will transform the image into a jpeg source and a webp source and also a webp format low quality placeholder, and end up like this
 
 ```html

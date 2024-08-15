@@ -28,6 +28,9 @@ function HomepageHeader() {
 					>
 						Scroll Down To See The Images
 					</button>
+					<Link className="button button--secondary button--lg" to="/markdown-page">
+						Markdown Page Example
+					</Link>
 					<Link className="button button--secondary button--lg" to="/mdx-page">
 						MDX Page Example
 					</Link>
