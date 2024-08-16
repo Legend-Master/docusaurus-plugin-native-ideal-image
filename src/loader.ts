@@ -105,7 +105,6 @@ export default async function loader(this: LoaderContext<LoaderOptions>, buffer:
 			],
 		} satisfies NativeIdealImageData
 		callback(null, generateOutput(output))
-		generateOutput
 		return
 	}
 
