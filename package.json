@@ -1,6 +1,6 @@
 {
 	"name": "docusaurus-plugin-native-ideal-image",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Pre-process images to multiple formats and low quality image placeholders",
 	"keywords": [
 		"docusaurus"
