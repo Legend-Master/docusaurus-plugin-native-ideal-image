@@ -2,8 +2,6 @@
 
 A docuaurus plugin for pre-processing images to multiple formats, sizes and low quality image placeholders, replacing [ideal-image](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-ideal-image)
 
-> Note: this is still working in progress
-
 ## Usage
 
 First install

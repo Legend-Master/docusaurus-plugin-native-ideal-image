@@ -23,6 +23,16 @@ export type Preset = {
 	lqip?: boolean
 }
 
+export type LqipFormat =
+	| SupportedOutputTypes
+	| {
+			format: SupportedOutputTypes
+			/** The image size to use, default to 16px */
+			size?: number
+			/** Encoding quality, default to 20 (1-100) */
+			quality?: number
+	  }
+
 export type LoaderOptions = {
 	/**
 	 * File name template for output files
@@ -35,7 +45,7 @@ export type LoaderOptions = {
 	/**
 	 * Low quality image placeholder format
 	 */
-	lqipFormat: SupportedOutputTypes
+	lqipFormat: LqipFormat
 	/**
 	 * Should disable the loader
 	 */
@@ -221,19 +231,24 @@ function emitFile(
 	return '__webpack_public_path__' + path
 }
 
-async function toBase64Lqip(image: sharp.Sharp, imageType: SupportedOutputTypes) {
-	const mimeType = MIMES[imageType]
-	const resized = image.resize(16)
+async function toBase64Lqip(image: sharp.Sharp, format: LqipFormat) {
+	const settings = typeof format === 'string' ? { format } : format
+	const mimeType = MIMES[settings.format]
+	const resized = image.resize(settings.size ?? 16)
 	let output: sharp.Sharp
 	switch (mimeType) {
 		case 'image/jpeg':
-			output = resized.jpeg({ quality: 20 })
+			output = resized.jpeg({ quality: settings.quality ?? 20 })
 			break
 		case 'image/webp':
-			output = resized.webp({ quality: 20, alphaQuality: 20, smartSubsample: true })
+			output = resized.webp({
+				quality: settings.quality ?? 20,
+				alphaQuality: settings.quality ?? 20,
+				smartSubsample: true,
+			})
 			break
 		case 'image/avif':
-			output = resized.avif({ quality: 20 })
+			output = resized.avif({ quality: settings.quality ?? 20 })
 			break
 	}
 	const data = await output.toBuffer()

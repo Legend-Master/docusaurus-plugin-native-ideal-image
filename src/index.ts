@@ -1,6 +1,6 @@
 import path from 'node:path'
 import type { LoadContext, Plugin, OptionValidationContext } from '@docusaurus/types'
-import type { LoaderOptions, Preset, SupportedOutputTypes } from './loader.js'
+import type { LoaderOptions, LqipFormat, Preset } from './loader.js'
 // import { Compilation, Compiler, NormalModule, type LoaderContext } from 'webpack'
 // import { fileURLToPath } from 'node:url'
 
@@ -13,6 +13,7 @@ export type {
 	OutputDataForFormat,
 	LoaderOptions,
 	Preset,
+	LqipFormat,
 } from './loader.js'
 
 export type NativeIdealImageOptions = Partial<{
@@ -27,7 +28,7 @@ export type NativeIdealImageOptions = Partial<{
 	/**
 	 * Low quality image placeholder format
 	 */
-	lqipFormat: SupportedOutputTypes
+	lqipFormat: LqipFormat
 	/**
 	 * Disable in dev mode for faster compile time
 	 */
