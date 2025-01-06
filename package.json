@@ -25,25 +25,28 @@
 		"clean-lib-folder": "node scripts/clean-lib-folder.js",
 		"prepublishOnly": "npm run clean-build"
 	},
-	"devDependencies": {
-		"@docusaurus/module-type-aliases": "^3.5.1",
-		"@docusaurus/types": "^3.5.1",
-		"@types/loader-utils": "^2.0.6",
-		"@types/node": "20.x",
-		"prettier": "^3.3.3",
-		"typescript": "^5.5.4"
-	},
 	"dependencies": {
-		"@docusaurus/core": "^3.5.1",
+		"@docusaurus/types": "^3.5.1",
 		"clsx": "^2.1.1",
 		"loader-utils": "^3.3.1",
 		"mdast-util-mdx": "^3.0.0",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
 		"sharp": "^0.33.4",
 		"unified": "^11.0.5",
 		"unist-util-visit": "^5.0.0",
 		"webpack": "^5.93.0"
+	},
+	"devDependencies": {
+		"@docusaurus/module-type-aliases": "^3.5.1",
+		"@types/loader-utils": "^2.0.6",
+		"@types/node": "22.x",
+		"prettier": "^3.4.2",
+		"typescript": "~5.7.2",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"peerDependencies": {
+		"react": "^18.0.0 || ^19.0.0",
+		"react-dom": "^18.0.0 || ^19.0.0"
 	},
 	"workspaces": [
 		"example"
