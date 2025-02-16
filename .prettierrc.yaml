@@ -3,3 +3,4 @@ singleQuote: true
 htmlWhitespaceSensitivity: ignore
 useTabs: true
 printWidth: 100
+experimentalOperatorPosition: start

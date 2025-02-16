@@ -39,7 +39,7 @@
 		"@docusaurus/module-type-aliases": "^3.5.1",
 		"@types/loader-utils": "^2.0.6",
 		"@types/node": "22.x",
-		"prettier": "^3.4.2",
+		"prettier": "^3.5.1",
 		"typescript": "~5.7.2",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"

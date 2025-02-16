@@ -65,12 +65,12 @@ export default function plugin(options: RemarkPluginOptions): Transformer {
 			visit(ast, 'mdxjsEsm', (node: MdxjsEsm) => {
 				const found = node.data?.estree?.body.find(
 					(body) =>
-						body.type === 'ImportDeclaration' &&
-						body.specifiers.find(
+						body.type === 'ImportDeclaration'
+						&& body.specifiers.find(
 							(specifier) =>
-								specifier.type === 'ImportDefaultSpecifier' &&
-								specifier.local.type === 'Identifier' &&
-								specifier.local.name === 'NativeIdealImage',
+								specifier.type === 'ImportDefaultSpecifier'
+								&& specifier.local.type === 'Identifier'
+								&& specifier.local.name === 'NativeIdealImage',
 						),
 				)
 				if (found) {
