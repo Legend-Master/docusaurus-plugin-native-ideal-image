@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, type ComponentProps } from 'react'
+import React, { useEffect, useRef, useState, type ComponentProps, type JSX } from 'react'
 import clsx from 'clsx'
 import type { NativeIdealImageData } from '../index.js'
 import type { SrcSetData } from '../loader.js'
