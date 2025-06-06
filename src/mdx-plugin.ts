@@ -107,6 +107,7 @@ function importNativeIdealImageValue() {
 								},
 							},
 						],
+						attributes: [],
 						source: {
 							type: 'Literal',
 							value: '@theme/NativeIdealImage',
