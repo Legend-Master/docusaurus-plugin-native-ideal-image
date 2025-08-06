@@ -16,13 +16,40 @@ export type {
 	LqipFormat,
 } from './loader.js'
 
+/**
+ * The plugin options, they will be merged with {@linkcode DEFAULT_OPTIONS}
+ *
+ * @example
+ *
+ * ```typescript
+ * const config: Config = {
+ * 	plugins: [
+ * 		[
+ * 			'native-ideal-image',
+ * 			{
+ * 				presets: {
+ * 					card: {
+ * 						sizes: [600, 800, 1000],
+ * 						formats: ['avif', 'webp', 'jpeg'],
+ * 					},
+ * 				},
+ * 				disableInDev: true,
+ * 			} satisfies NativeIdealImageOptions,
+ * 		],
+ * 	],
+ * }
+ * ```
+ */
 export type NativeIdealImageOptions = Partial<{
 	/**
 	 * File name template for output files
 	 */
 	fileNameTemplate: string
 	/**
-	 * Image loader presets
+	 * Image loader presets, you can use them through URL queries like this:
+	 * `import image from 'ideal-img!./some-image.png?preset=card'`
+	 *
+	 * `default` preset is used when there's no preset query
 	 */
 	presets: Record<string, Preset>
 	/**

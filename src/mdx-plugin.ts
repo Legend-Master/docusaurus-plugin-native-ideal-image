@@ -4,13 +4,42 @@ import type { Parent } from 'unist'
 import { visit, EXIT } from 'unist-util-visit'
 import { assetRequireAttributeValue, transformNode } from './utils.js'
 
+/**
+ * The remark plugin options
+ *
+ * @example
+ *
+ * ```typescript
+ * const config = {
+ * 	presets: [
+ * 		[
+ * 			'classic',
+ * 			{
+ * 				// The same for docs and blog
+ * 				pages: {
+ * 					remarkPlugins: [
+ * 						[
+ * 							nativeIdealImageRemarkPlugin,
+ * 							{
+ * 								swapOnLoad: true,
+ * 							} satisfies NativeIdealImageRemarkPluginOptions,
+ * 						],
+ * 					],
+ * 				},
+ * 			},
+ * 		],
+ * 	],
+ * }
+ * ```
+ */
 export type RemarkPluginOptions = Partial<{
 	/**
 	 * The image loader preset to use
 	 */
 	preset: string
 	/**
-	 * Swap (fade in) the actual image after it's fully loaded
+	 * Swap (fade in) the actual image after it's fully loaded,
+	 * this corresponds to `NativeIdealImageProps.swapOnLoad`
 	 */
 	swapOnLoad: boolean
 }>
