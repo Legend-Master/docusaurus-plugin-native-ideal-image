@@ -4,6 +4,10 @@
         "outDir": "../lib",
         // "sourceMap": true,
         "declaration": true,
+
+        "types": [
+			"@docusaurus/module-type-aliases",
+		],
     },
     "exclude": ["./**.d.ts"]
 }
