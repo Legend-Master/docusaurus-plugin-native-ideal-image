@@ -1,6 +1,6 @@
 # Docusaurus Native Ideal Image Plugin
 
-A docuaurus plugin for pre-processing images to multiple formats, sizes and low quality image placeholders, replacing [ideal-image](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-ideal-image)
+A [Docusaurus](https://docusaurus.io/) plugin for pre-processing images to multiple formats, sizes and low quality image placeholders, replacing [ideal-image](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-ideal-image)
 
 ## Usage
 
