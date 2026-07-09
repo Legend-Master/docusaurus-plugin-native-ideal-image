@@ -1,6 +1,18 @@
 # Docusaurus Native Ideal Image Plugin
 
-A [Docusaurus](https://docusaurus.io/) plugin for pre-processing images to multiple formats, sizes and low quality image placeholders, replacing [ideal-image](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-ideal-image)
+A [Docusaurus](https://docusaurus.io/) plugin for pre-processing images to multiple formats, sizes and low quality image placeholders
+
+This replaces the official [@docusaurus/plugin-ideal-image](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-ideal-image) through modern browser native [`srcset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset) and [lazy loading](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#loading)
+
+## Why
+
+The official [@docusaurus/plugin-ideal-image](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-ideal-image) has some limitations and bugs which this package was made to solve:
+
+- [Image flashing when navigating back and forward](https://github.com/facebook/docusaurus/issues/10214)
+- Buggy low bandwidth detection that replaces the image with a 'Click to load' text instead of just loading it.
+- Doesn't support newer image formats that has better compression ratios like WebP and AVIF
+
+Apart from these, using browser native features is more performant, and resulting in smaller bundle sizes
 
 ## Usage
 
@@ -55,11 +67,16 @@ By default, this will transform the image into a jpeg source and a webp source a
 
 ```html
 <picture
-    class="native-ideal-img"
-    style="--lqip: url(data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAQCdASoQAAwABUB8JZQAAudcoVPyIAD+uVyF4iJZsGTWpdieB7utExa6oMeh0PusAA==);"
+	class="native-ideal-img"
+	style="--lqip: url(data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAQCdASoQAAwABUB8JZQAAudcoVPyIAD+uVyF4iJZsGTWpdieB7utExa6oMeh0PusAA==);"
 >
-    <source srcset="assets/native-ideal-image/some-image-b0600-2160.webp" type="image/webp" />
-    <img loading="lazy" src="assets/native-ideal-image/some-image-6ee75-2160.jpeg" width="2160" height="1620" />
+	<source srcset="assets/native-ideal-image/some-image-b0600-2160.webp" type="image/webp" />
+	<img
+		loading="lazy"
+		src="assets/native-ideal-image/some-image-6ee75-2160.jpeg"
+		width="2160"
+		height="1620"
+	/>
 </picture>
 ```
 
