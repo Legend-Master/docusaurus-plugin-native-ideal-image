@@ -1,6 +1,6 @@
 import type { LoaderContext } from 'webpack'
 import loaderUtils from 'loader-utils'
-import { sharp, type Sharp } from 'sharp'
+import sharp, { type Sharp } from 'sharp'
 
 const MIMES = {
 	jpeg: 'image/jpeg',
