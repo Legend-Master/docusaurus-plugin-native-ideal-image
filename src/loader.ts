@@ -1,6 +1,6 @@
 import type { LoaderContext } from 'webpack'
 import loaderUtils from 'loader-utils'
-import sharp from 'sharp'
+import { sharp, type Sharp } from 'sharp'
 
 const MIMES = {
 	jpeg: 'image/jpeg',
@@ -170,7 +170,7 @@ export default async function loader(this: LoaderContext<LoaderOptions>, buffer:
 
 async function createFiles(
 	context: LoaderContext<LoaderOptions>,
-	image: sharp.Sharp,
+	image: Sharp,
 	options: { formats: SupportedOutputTypes[]; sizes: number[] },
 ): Promise<OutputDataForFormat[]> {
 	const formats: OutputDataForFormat[] = []
@@ -186,12 +186,12 @@ async function createFiles(
 
 async function processImage(
 	context: LoaderContext<LoaderOptions>,
-	image: sharp.Sharp,
+	image: Sharp,
 	size: number,
 	format: SupportedOutputTypes,
 ): Promise<SrcSetData> {
 	const resized = image.resize(size)
-	let output: sharp.Sharp
+	let output: Sharp
 	switch (format) {
 		case 'jpeg':
 			output = resized.jpeg({ quality: 75, progressive: size > 500 })
@@ -231,11 +231,11 @@ function emitFile(
 	return '__webpack_public_path__' + path
 }
 
-async function toBase64Lqip(image: sharp.Sharp, format: LqipFormat) {
+async function toBase64Lqip(image: Sharp, format: LqipFormat) {
 	const settings = typeof format === 'string' ? { format } : format
 	const mimeType = MIMES[settings.format]
 	const resized = image.resize(settings.size ?? 16)
-	let output: sharp.Sharp
+	let output: Sharp
 	switch (mimeType) {
 		case 'image/jpeg':
 			output = resized.jpeg({ quality: settings.quality ?? 20 })
